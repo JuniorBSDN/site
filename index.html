@@ -205,25 +205,6 @@
     </footer>
 
     <script>
-        document.getElementById('contactForm').addEventListener('submit', function(e) {
-            e.preventDefault();
-
-            // Simulate form submission
-            setTimeout(() => {
-                // Show success message
-                document.getElementById('successMessage').classList.add('show');
-
-                // Reset form
-                this.reset();
-
-                // Hide success message after 5 seconds
-                setTimeout(() => {
-                    document.getElementById('successMessage').classList.remove('show');
-                }, 5000);
-            }, 1000);
-        });
-
-
     document.getElementById('contactForm').addEventListener('submit', function(e) {
         e.preventDefault();
 
@@ -232,28 +213,21 @@
         const assunto = document.getElementById('subject').value;
         const mensagem = document.getElementById('message').value;
 
-        fetch("/api/", {
+        fetch("/api", {
             method: "POST",
-            headers: {
-                "Content-Type": "application/json"
-            },
-            body: JSON.stringify({
-                nome: nome,
-                email: email,
-                assunto: assunto,
-                mensagem: mensagem
-            })
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify({ nome, email, assunto, mensagem })
         })
         .then(response => response.json())
         .then(data => {
             if (data.mensagem) {
                 document.getElementById('successMessage').classList.add('show');
-                this.reset();
+                document.getElementById('contactForm').reset();
                 setTimeout(() => {
                     document.getElementById('successMessage').classList.remove('show');
                 }, 5000);
             } else {
-                alert("Erro ao enviar: " + data.erro);
+                alert("Erro: " + data.erro);
             }
         })
         .catch(error => {
@@ -261,7 +235,7 @@
             console.error(error);
         });
     });
+</script>
 
-    </script>
 </body>
 </html>
